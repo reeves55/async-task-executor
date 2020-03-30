@@ -5,5 +5,5 @@ package com.xiaolee.async.core;
  * @date: 2020/3/30
  */
 public interface TaskPromiseListener {
-    void onComplete(TaskPromise promise) throws Exception;
+    void onComplete(TaskPromise promise);
 }
