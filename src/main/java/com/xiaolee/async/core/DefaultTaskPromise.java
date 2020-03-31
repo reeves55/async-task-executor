@@ -158,7 +158,7 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
     }
 
 
-    class RunnableAdapter<T> implements Callable<T> {
+    private class RunnableAdapter<T> implements Callable<T> {
         Runnable r;
         T result;
 
