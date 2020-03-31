@@ -108,6 +108,9 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
         }
     }
 
+    /**
+     * tryRejected操作一定是在addListener之前完成的
+     */
     public void tryRejected() {
         isRejected = true;
         status.set(REJECTED);

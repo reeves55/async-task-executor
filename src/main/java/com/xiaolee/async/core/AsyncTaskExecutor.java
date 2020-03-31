@@ -30,6 +30,9 @@ public class AsyncTaskExecutor {
         return promise;
     }
 
+    /**
+     * default thread factory
+     */
     private class AsyncThreadFactory implements ThreadFactory {
         private int id = 0;
 
@@ -41,6 +44,9 @@ public class AsyncTaskExecutor {
         }
     }
 
+    /**
+     * default reject policy
+     */
     private class DefaultRetryPolicy implements RejectedExecutionHandler {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
