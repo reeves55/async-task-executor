@@ -5,6 +5,9 @@ import com.xiaolee.async.core.TaskPromise;
 import com.xiaolee.async.core.TaskPromiseListener;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -13,6 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Example {
     public static void main(String[] args) {
+        test();
+
         AsyncTaskExecutor executor = new AsyncTaskExecutor(300);
         final AtomicInteger count = new AtomicInteger(0);
 
@@ -53,4 +58,29 @@ public class Example {
             e.printStackTrace();
         }
     }
+
+    private static void test() {
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+        executor.schedule(()->{
+            System.out.println("我是定时器任务...");
+        }, 3, TimeUnit.SECONDS);
+
+        executor.execute(() -> {
+            try {
+                System.out.println("我是来捣乱的耗时任务...");
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        try {
+            CountDownLatch latch = new CountDownLatch(1);
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
