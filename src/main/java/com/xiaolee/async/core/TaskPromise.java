@@ -20,10 +20,16 @@ public interface TaskPromise<T> {
     TaskPromise<T> addListener(TaskPromiseListener listener);
 
     /**
-     * 获取执行异常信息
+     * 获取任务执行异常信息
      * @return
      */
     Exception cause();
+
+    /**
+     * 任务是否被拒绝执行
+     * @return
+     */
+    boolean isRejected();
 
     /**
      * 获取执行结果
