@@ -3,7 +3,6 @@ package com.xiaolee.async.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,11 +10,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date: 2020/3/29
  */
 public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
-    private static final Integer INIT = 0;
-    private static final Integer RUNNING = 1;
-    private static final Integer SUCCESS = 2;
-    private static final Integer REJECTED = 3;
-    private static final Integer FAILED = 4;
+    private static final int INIT      = 0;
+    private static final int CANCELED  = 1;
+    private static final int RUNNING   = 2;
+    private static final int SUCCESS   = 3;
+    private static final int REJECTED  = 4;
+    private static final int FAILED    = 5;
 
     private List<TaskPromiseListener> listeners;
     private T result;
@@ -59,7 +59,7 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
     }
 
     @Override
-    public TaskPromise addListener(TaskPromiseListener listener) {
+    public TaskPromise<T> addListener(TaskPromiseListener listener) {
         synchronized (this) {
             listeners.add(listener);
         }
@@ -74,6 +74,21 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
     @Override
     public Exception cause() {
         return cause;
+    }
+
+    @Override
+    public boolean isDone() {
+        return status.get() > RUNNING;
+    }
+
+    @Override
+    public boolean cancel() {
+        return status.compareAndSet(INIT, CANCELED);
+    }
+
+    @Override
+    public boolean isCanceled() {
+        return status.get() == CANCELED;
     }
 
     @Override
@@ -116,7 +131,7 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
         status.set(REJECTED);
     }
 
-    private DefaultTaskPromise self() {
+    private DefaultTaskPromise<T> self() {
         return this;
     }
 
@@ -126,8 +141,9 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
         thread = Thread.currentThread();
 
         try {
-            status.compareAndSet(INIT, RUNNING);
-            setResult(getTask().call());
+            if (status.get() == INIT && status.compareAndSet(INIT, RUNNING)) {
+                setResult(getTask().call());
+            }
         } catch (Exception e) {
             status.compareAndSet(RUNNING, FAILED);
             cause = e;

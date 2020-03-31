@@ -6,7 +6,7 @@ import java.util.concurrent.*;
  * @author: xiao
  * @date: 2020/3/29
  */
-public class AsyncTaskExecutor {
+public class AsyncTaskExecutor implements AsyncExecutorService {
     private ThreadPoolExecutor pool;
     /**
      * default pool size is equal to processors number
@@ -18,13 +18,13 @@ public class AsyncTaskExecutor {
         pool = new ThreadPoolExecutor(DEFAULT_POOL_SIZE, DEFAULT_POOL_SIZE, 60, TimeUnit.SECONDS, queue, new AsyncThreadFactory(), new DefaultRetryPolicy());
     }
 
-    public TaskPromise execute(Runnable task) {
+    public TaskPromise<Void> execute(Runnable task) {
         DefaultTaskPromise<Void> promise = new DefaultTaskPromise<Void>(task);
         pool.execute(promise);
         return promise;
     }
 
-    public <T> TaskPromise execute(Callable<T> task) {
+    public <T> TaskPromise<T> execute(Callable<T> task) {
         DefaultTaskPromise<T> promise = new DefaultTaskPromise<T>(task);
         pool.execute(promise);
         return promise;

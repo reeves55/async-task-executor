@@ -1,5 +1,7 @@
 package com.xiaolee.async.core;
 
+import java.util.concurrent.Future;
+
 /**
  * @author: xiao
  * @date: 2020/3/29
@@ -24,6 +26,24 @@ public interface TaskPromise<T> {
      * @return
      */
     Exception cause();
+
+    /**
+     * 是否执行完毕
+     * @return
+     */
+    boolean isDone();
+
+    /**
+     * 取消执行
+     * @return
+     */
+    boolean cancel();
+
+    /**
+     * 是否已被取消执行
+     * @return
+     */
+    boolean isCanceled();
 
     /**
      * 任务是否被拒绝执行
