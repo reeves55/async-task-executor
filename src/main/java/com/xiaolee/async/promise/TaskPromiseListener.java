@@ -1,4 +1,4 @@
-package com.xiaolee.async.core;
+package com.xiaolee.async.promise;
 
 /**
  * @author: xiao

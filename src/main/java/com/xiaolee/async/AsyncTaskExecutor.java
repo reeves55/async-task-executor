@@ -1,4 +1,7 @@
-package com.xiaolee.async.core;
+package com.xiaolee.async;
+
+import com.xiaolee.async.promise.DefaultTaskPromise;
+import com.xiaolee.async.promise.TaskPromise;
 
 import java.util.concurrent.*;
 
@@ -51,7 +54,7 @@ public class AsyncTaskExecutor implements AsyncExecutorService {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             if (r instanceof DefaultTaskPromise) {
-                DefaultTaskPromise task = (DefaultTaskPromise) r;
+                DefaultTaskPromise<?> task = (DefaultTaskPromise<?>) r;
                 task.tryRejected();
             }
         }

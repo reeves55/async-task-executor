@@ -1,4 +1,6 @@
-package com.xiaolee.async.core;
+package com.xiaolee.async;
+
+import com.xiaolee.async.promise.TaskPromise;
 
 import java.util.concurrent.Callable;
 

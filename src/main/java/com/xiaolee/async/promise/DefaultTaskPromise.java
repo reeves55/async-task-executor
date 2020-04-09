@@ -1,4 +1,4 @@
-package com.xiaolee.async.core;
+package com.xiaolee.async.promise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +129,8 @@ public class DefaultTaskPromise<T> implements TaskPromise<T>, Runnable {
     public void tryRejected() {
         isRejected = true;
         status.set(REJECTED);
+
+        notifyListeners();
     }
 
     private DefaultTaskPromise<T> self() {

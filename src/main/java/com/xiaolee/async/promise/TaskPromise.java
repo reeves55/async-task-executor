@@ -1,6 +1,4 @@
-package com.xiaolee.async.core;
-
-import java.util.concurrent.Future;
+package com.xiaolee.async.promise;
 
 /**
  * @author: xiao

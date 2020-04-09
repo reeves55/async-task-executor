@@ -1,10 +1,7 @@
 package com.xiaolee.async.example;
 
-import com.xiaolee.async.core.AsyncTaskExecutor;
-import com.xiaolee.async.core.TaskPromise;
-import com.xiaolee.async.core.TaskPromiseListener;
+import com.xiaolee.async.AsyncTaskExecutor;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
